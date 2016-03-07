@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.addOnPageOverScrollListener(new OverScrollViewPager.OnPageOverScrollListener() {
             @Override
             public void onPageOverScrolled(OverScrollViewPager.SCROLL_STATE state) {
-                Log.d(TAG, "onPageOverScrolled() called with: " + "state = [" + state + "]");
+                Snackbar.make(getWindow().getDecorView(),
+                        "onPageOverScrolled() called with: " + "state = [" + state + "]",
+                        Snackbar.LENGTH_LONG).show();
             }
         });
     }
