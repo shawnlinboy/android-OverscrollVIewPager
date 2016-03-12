@@ -19,12 +19,12 @@ public class OverScrollViewPager extends ViewPager {
 
     private static final String TAG = "OverScrollViewPager";
 
-    private static final boolean DEBUG = BuildConfig.DEBUG;
+    private static final boolean DEBUG = false;
 
     private GestureDetectorCompat mDetector;
     private List<OnPageOverScrollListener> mOnPageOverScrollListeners;
     private OnPageOverScrollListener mOnPageOverScrollListener;
-    private SCROLL_STATE mState;
+    private SCROLL_STATE mState = SCROLL_STATE.IDLE;
 
     public OverScrollViewPager(Context context) {
         super(context, null);
@@ -50,7 +50,10 @@ public class OverScrollViewPager extends ViewPager {
     public boolean onTouchEvent(MotionEvent ev) {
         mDetector.onTouchEvent(ev);
         if (MotionEventCompat.getActionMasked(ev) == MotionEvent.ACTION_UP) {
-            mState = SCROLL_STATE.IDLE;
+            if (mState != SCROLL_STATE.IDLE) {
+                dispatchOnPageOverScrolled(mState);
+                mState = SCROLL_STATE.IDLE;
+            }
         }
         return super.onTouchEvent(ev);
     }
@@ -112,7 +115,6 @@ public class OverScrollViewPager extends ViewPager {
     private void onPageOverScroll(SCROLL_STATE state) {
         if (mState != state) {
             if (DEBUG) Log.i(TAG, "onScroll: " + state);
-            dispatchOnPageOverScrolled(state);
             mState = state;
         }
     }
